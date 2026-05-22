@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Fira+Code:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-serif: "Playfair Display", Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: "Fira Code", monospace;
+
+  /* Natural Tones Custom Color Palette */
+  --color-natural-bg: #F5F5F0;
+  --color-natural-text: #2C2C28;
+  --color-natural-border: #DEDBD2;
+  --color-natural-aside: #E9E9E2;
+  --color-natural-accent: #5A5A40;
+}

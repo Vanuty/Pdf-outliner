@@ -1,0 +1,6 @@
+{
+  "name": "Pdf-outliner",
+  "description": "智能 PDF 书签生成器 - 专为学习资料类 PDF 打造的智能目录提取、页码矫正与 AI 自动书签系统",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
