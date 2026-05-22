@@ -11,6 +11,7 @@ interface BookmarkTreeProps {
   onGoToPage: (page: number) => void;
   onMoveBookmark: (index: number, direction: "up" | "down") => void;
   onAddBookmarkAt: (index: number) => void;
+  onSmoothLevels: () => void;
 }
 
 export default function BookmarkTree({
@@ -22,6 +23,7 @@ export default function BookmarkTree({
   onGoToPage,
   onMoveBookmark,
   onAddBookmarkAt,
+  onSmoothLevels,
 }: BookmarkTreeProps) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState("");
@@ -58,9 +60,20 @@ export default function BookmarkTree({
       <div className="p-4 border-b border-natural-border bg-white flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <h3 className="font-serif italic text-lg font-semibold text-natural-text">书签大纲 / Outlines</h3>
-          <span className="text-[10px] bg-natural-bg border border-natural-border text-natural-accent font-mono font-bold px-2 py-0.5 rounded-md shadow-sm">
-            共 {bookmarks.length} 项
-          </span>
+          <div className="flex items-center gap-1.5">
+            {bookmarks.length > 0 && (
+              <button
+                onClick={onSmoothLevels}
+                className="text-[10px] bg-[#FAF9F5] border border-natural-accent/30 text-natural-accent hover:bg-natural-accent hover:text-white px-2 py-0.5 rounded-md shadow-sm font-bold transition-all duration-200 cursor-pointer flex items-center gap-0.5"
+                title="智能修复大纲层级，消除跳变空档，自动重建健康的树缩进关系"
+              >
+                层级平滑
+              </button>
+            )}
+            <span className="text-[10px] bg-natural-bg border border-natural-border text-natural-text/70 font-mono font-bold px-2 py-0.5 rounded-md shadow-sm">
+              共 {bookmarks.length} 项
+            </span>
+          </div>
         </div>
         <input
           type="text"

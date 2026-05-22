@@ -452,7 +452,22 @@ export default function App() {
       if (allMappedBookmarks.length > 0) {
         setBookmarks((prev) => {
           const appended = [...prev, ...allMappedBookmarks];
-          return appended.sort((x, y) => x.pageNumber - y.pageNumber);
+          const sorted = appended.sort((x, y) => x.pageNumber - y.pageNumber);
+          
+          // Apply automatic hierarchy level-smoothing optimizer (no indentation jumps)
+          if (sorted.length > 0) {
+            if (sorted[0].level > 1) {
+              sorted[0] = { ...sorted[0], level: 1 };
+            }
+            for (let i = 1; i < sorted.length; i++) {
+              const prevL = sorted[i - 1].level;
+              const currL = sorted[i].level;
+              if (currL > prevL + 1) {
+                sorted[i] = { ...sorted[i], level: prevL + 1 };
+              }
+            }
+          }
+          return sorted;
         });
 
         // Set active preview page to the first generated AI bookmark page
@@ -527,6 +542,25 @@ export default function App() {
   };
 
   // Batch actions on bookmarks
+  const handleSmoothLevels = () => {
+    setBookmarks((prev) => {
+      if (prev.length === 0) return prev;
+      const sorted = [...prev].sort((x, y) => x.pageNumber - y.pageNumber);
+      if (sorted[0].level > 1) {
+        sorted[0] = { ...sorted[0], level: 1 };
+      }
+      for (let i = 1; i < sorted.length; i++) {
+        const prevL = sorted[i - 1].level;
+        const currL = sorted[i].level;
+        if (currL > prevL + 1) {
+          sorted[i] = { ...sorted[i], level: prevL + 1 };
+        }
+      }
+      return sorted;
+    });
+    showToast("🎉 智能层级规格矫正成功！已修复所有层级阶梯跳跃，缩进关系过渡平滑到位！", "success");
+  };
+
   const clearAllBookmarks = () => {
     setConfirmBox({
       message: "确定要一键清空所有书签吗？这会让你重新设计或者重新导入全部节点大纲。",
@@ -1128,6 +1162,7 @@ export default function App() {
               }}
               onMoveBookmark={handleMoveBookmark}
               onAddBookmarkAt={handleAddBookmarkAt}
+              onSmoothLevels={handleSmoothLevels}
             />
           </div>
 
